@@ -6,14 +6,17 @@ import sklearn
 import numpy as np
 import random
 from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score
-from transformers import AutoTokenizer, AutoConfig, AutoModelForSequenceClassification, Trainer, TrainingArguments, RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification, BertTokenizer, BertTokenizerFast
-import string
+from transformers import AutoTokenizer, AutoConfig, AutoModelForSequenceClassification, Trainer, TrainingArguments, RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification, BertTokenizer
+from sklearn.model_selection import train_test_split
+import torch.nn as nn
 
-from konlpy.tag import Mecab
+import wandb
 
 from load_data import *
+from bertmodel import *
 
-from sklearn.model_selection import train_test_split
+from collections import Counter
+
 
 
 def klue_re_micro_f1(preds, labels):
@@ -81,69 +84,46 @@ def seed_everything(seed):
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
-    
-def mecab_tokenizer(m, sentence):
-  morph = []
-  for st in sentence.split(" "):
-    count = 0
-    for token in m.morphs(st):
-      tk = token
-      if not tk.isalpha():
-        count = 0
-      if count > 0:
-        tk = "##" + tk
-        morph.append(tk)
-      else:
-        morph.append(tk)
-        if tk.isalpha():
-          count += 1
-                
-  return morph
 
+def return_all_items(dataset):
+  all_items = []
+  for i in range(len(dataset)):
+    all_items.append(dataset[i])
+  return all_items
 
-def get_vocab_file():
+def train():
   seed_everything(42)
 
-  train_dataset = load_data("../dataset/train/train_drop_duplicated.csv")
-
-  m = Mecab()
-
-  tokenized_list = ['[CLS]', '[PAD]', '[SEP]', '[UNK]', '[MASK]']
-
-  for idx, row in train_dataset.iterrows():
-    kor_text = row['sentence']
-    tokenized = mecab_tokenizer(m, kor_text)
-    for token in tokenized:
-      if token not in tokenized_list:
-        tokenized_list.append(token)
-
-  with open('./after_mecab_test.txt', 'w', encoding='utf-8') as f:
-    for line in tokenized_list:
-        f.write(line+'\n')
-
-def tokenizer():
-  vocab_path = './after_mecab_test.txt'
+  # load model and tokenizer
+  # MODEL_NAME = "bert-base-uncased"
   MODEL_NAME = "klue/roberta-large"
-  bert_tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+  tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 
-  tokenizer = BertTokenizer(vocab_file=vocab_path, do_lower_case=False)
+  # load dataset
+  train_dataset = load_data("../dataset/train/train.csv", True)
+  
+  train_label = label_to_num(train_dataset['label'].values)
+  # dev_label = label_to_num(dev_dataset['label'].values)
 
-  test_dataset = load_data("../dataset/test/test_data.csv")
+  # tokenizing dataset
+  tokenized_train = tokenized_dataset(train_dataset, tokenizer)
+  # tokenized_dev = tokenized_dataset(dev_dataset, tokenizer)
 
-  for idx, row in test_dataset[553:560].iterrows():
-    text = row['sentence']
+  # make dataset for pytorch.
+  RE_train_dataset = RE_Dataset(tokenized_train, train_label)
+  # RE_dev_dataset = RE_Dataset(tokenized_dev, dev_label)
+  RE_train_dataset, RE_dev_dataset = RE_train_dataset.split_dataset(0.1)
+  print(RE_train_dataset[0])
 
-    tokenized = bert_tokenizer(text)
-    print(bert_tokenizer.decode(tokenized['input_ids']))
-    t = tokenizer(text)
-    print(tokenizer.decode(t['input_ids']))
-    print(tokenized)
-    print(t)
-    print()
+  count_list = []
+  for data in RE_dev_dataset:
+    count_list.append(data['labels'].item())
+
+  print(count_list)
+  print(Counter(count_list))
 
 def main():
-  get_vocab_file()
+  train()
 
 if __name__ == '__main__':
   main()
-

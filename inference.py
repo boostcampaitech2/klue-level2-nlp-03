@@ -10,7 +10,9 @@ import numpy as np
 import argparse
 from tqdm import tqdm
 
-def inference(model, tokenized_sent, device):
+from bertmodel import *
+
+def inference(model, tokenized_sent, device, rbert):
   """
     test dataset을 DataLoader로 만들어 준 후,
     batch_size로 나눠 model이 예측 합니다.
@@ -21,11 +23,22 @@ def inference(model, tokenized_sent, device):
   output_prob = []
   for i, data in enumerate(tqdm(dataloader)):
     with torch.no_grad():
-      outputs = model(
+      if rbert:
+        outputs = model(
           input_ids=data['input_ids'].to(device),
           attention_mask=data['attention_mask'].to(device),
+          e1_mask = data['e1_mask'].to(device),
+          e2_mask = data['e2_mask'].to(device)
           # token_type_ids=data['token_type_ids'].to(device)
           )
+      else:
+        outputs = model(
+            input_ids=data['input_ids'].to(device),
+            attention_mask=data['attention_mask'].to(device),
+            # e1_mask = data['e1_mask'].to(device),
+            # e2_mask = data['e2_mask'].to(device)
+            # token_type_ids=data['token_type_ids'].to(device)
+            )
     logits = outputs[0]
     prob = F.softmax(logits, dim=-1).detach().cpu().numpy()
     logits = logits.detach().cpu().numpy()
@@ -48,12 +61,12 @@ def num_to_label(label):
   
   return origin_label
 
-def load_test_dataset(dataset_dir, tokenizer):
+def load_test_dataset(dataset_dir, tokenizer, rbert):
   """
     test dataset을 불러온 후,
     tokenizing 합니다.
   """
-  test_dataset = load_data(dataset_dir, rbert=True)
+  test_dataset = load_data(dataset_dir, rbert)
   test_label = list(map(int,test_dataset['label'].values))
   # tokenizing dataset
   tokenized_test = tokenized_dataset(test_dataset, tokenizer)
@@ -68,37 +81,53 @@ def main(args):
   Tokenizer_NAME = "klue/roberta-large"
   tokenizer = AutoTokenizer.from_pretrained(Tokenizer_NAME)
 
-  rbert = True
-
-  if rbert:
-    special_tokens_dict = {'additional_special_tokens': ['[E11]','[E12]','[E21]','[E22]']}
-    num_added_toks = tokenizer.add_special_tokens(special_tokens_dict)
-
   ## load my model
-  MODEL_NAME = args.model_dir # model dir.
-  model = AutoModelForSequenceClassification.from_pretrained(args.model_dir)
-  model.parameters
+  # MODEL_NAME = args.model_dir # model dir.
+  # # model = AutoModelForSequenceClassification.from_pretrained(args.model_dir)
+  # # model = RRobertaClassification.from_pretrained(args.model_dir)
+  # model = CustomRobertaForSequenceClassification.from_pretrained(args.model_dir)
+  # model.parameters
 
-  if rbert:
-    model.resize_token_embeddings(len(tokenizer))
+  MODEL_NAME = args.model_dir
+
+  if args.model_type == 'default':
+    print('Training on RoBERTa model with Focal Loss')
+    # model =  AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
+    model = CustomRobertaForSequenceClassification.from_pretrained(MODEL_NAME)
+
+  elif args.model_type == 'rbert':
+    print('Training on R-RoBERTa model')
+    model = RRobertaClassification.from_pretrained(MODEL_NAME)
+
+  elif args.model_type == 'lstm':
+    print('Training on LSTM+RoBERTa model')
+    model = LSTMRobertaForSequenceClassification.from_pretrained(MODEL_NAME)
 
   model.to(device)
 
   ## load test datset
   test_dataset_dir = "../dataset/test/test_data.csv"
-  test_id, test_dataset, test_label = load_test_dataset(test_dataset_dir, tokenizer)
-  Re_test_dataset = RE_Dataset(test_dataset ,test_label)
+  test_id, test_dataset, test_label = load_test_dataset(test_dataset_dir, tokenizer, rbert=args.rbert)
+  if args.rbert == True:
+    Re_test_dataset = RE_rbet_Dataset(test_dataset ,test_label)
+  else:
+    Re_test_dataset = RE_Dataset(test_dataset ,test_label)
 
   ## predict answer
-  pred_answer, output_prob = inference(model, Re_test_dataset, device) # model에서 class 추론
+  pred_answer, output_prob = inference(model, Re_test_dataset, device, args.rbert) # model에서 class 추론
   pred_answer = num_to_label(pred_answer) # 숫자로 된 class를 원래 문자열 라벨로 변환.
   
   ## make csv file with predicted answer
   #########################################################
   # 아래 directory와 columns의 형태는 지켜주시기 바랍니다.
   output = pd.DataFrame({'id':test_id,'pred_label':pred_answer,'probs':output_prob,})
+  
+  if args.name is not None:
+    file_name = './prediction/submission_'+ args.name +'.csv'
+  else:
+    file_name = './prediction/submission_.csv'
 
-  output.to_csv('./prediction/submission.csv', index=False) # 최종적으로 완성된 예측한 라벨 csv 파일 형태로 저장.
+  output.to_csv(file_name, index=False) # 최종적으로 완성된 예측한 라벨 csv 파일 형태로 저장.
   #### 필수!! ##############################################
   print('---- Finish! ----')
 if __name__ == '__main__':
@@ -106,6 +135,9 @@ if __name__ == '__main__':
   
   # model dir
   parser.add_argument('--model_dir', type=str, default="./best_model")
+  parser.add_argument('--name', type=str)
+  parser.add_argument('--rbert', type=bool, default=False)
+  parser.add_argument('--model_type', type=str)
   args = parser.parse_args()
   print(args)
   main(args)

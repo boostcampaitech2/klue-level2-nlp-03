@@ -6,11 +6,17 @@ import sklearn
 import numpy as np
 import random
 from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score
+from sklearn.model_selection import train_test_split
 from transformers import AutoTokenizer, AutoConfig, AutoModelForSequenceClassification, Trainer, TrainingArguments, RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification, BertTokenizer
+import torch.nn as nn
+
+import argparse
 
 import wandb
+from adamp import AdamP
 
 from load_data import *
+from bertmodel import *
 
 
 def klue_re_micro_f1(preds, labels):
@@ -29,7 +35,7 @@ def klue_re_micro_f1(preds, labels):
     no_relation_label_idx = label_list.index("no_relation")
     label_indices = list(range(len(label_list)))
     label_indices.remove(no_relation_label_idx)
-    return sklearn.metrics.f1_score(labels, preds, average="micro", labels=label_indices) * 100.0
+    return f1_score(labels, preds, average="micro", labels=label_indices) * 100.0
 
 def klue_re_auprc(probs, labels):
     """KLUE-RE AUPRC (with no_relation)"""
@@ -57,7 +63,7 @@ def compute_metrics(pred):
   return {
       'micro f1 score': f1,
       'auprc' : auprc,
-      'accuracy': acc,
+      'accuracy': acc
   }
 
 def label_to_num(label):
@@ -78,57 +84,104 @@ def seed_everything(seed):
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
-    
-def train():
+
+def return_all_items(dataset):
+  all_items = []
+  for i in range(len(dataset)):
+    all_items.append(dataset[i])
+  return all_items
+
+def train(args):
+
+  # os.environ["WANDB_DISABLED"] = "true"
   
   seed_everything(42)
 
   # load model and tokenizer
-  # MODEL_NAME = "bert-base-uncased"
   MODEL_NAME = "klue/roberta-large"
-  tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 
-  rbert = True
+  tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, cache_dir='bert_ckpt')
 
-  if rbert:
-    special_tokens_dict = {'additional_special_tokens': ['[E11]','[E12]','[E21]','[E22]']}
-    num_added_toks = tokenizer.add_special_tokens(special_tokens_dict)
-
+  if args.add_special:
+    # special token이 추가 되었을 때
+    special_tokens_dict = {'additional_special_tokens': ['[ENT]','[/ENT]']}
+    tokenizer.add_special_tokens(special_tokens_dict)  
+    
   # load dataset
-  train_dataset = load_data("../dataset/train/train.csv", rbert=rbert)
-  # dev_dataset = load_data("../dataset/train/dev.csv") # validation용 데이터는 따로 만드셔야 합니다.
+  if args.aug_data: 
+    #augmentation이 추가 되었을 시 
+    train_dataset = load_data("../dataset/train/train.csv")
+    aug_dataset = load_data("./aug_df_dropped.csv")
 
-  train_label = label_to_num(train_dataset['label'].values)
-  # dev_label = label_to_num(dev_dataset['label'].values)
+    train_dataset, dev_dataset = train_test_split(train_dataset, shuffle=True, test_size=0.2)
+    
+    train_dataset = train_dataset.append(aug_dataset)
+    train_dataset = train_dataset.sample(frac=1).reset_index(drop=True)
 
-  # tokenizing dataset
-  tokenized_train = tokenized_dataset(train_dataset, tokenizer)
-  # tokenized_dev = tokenized_dataset(dev_dataset, tokenizer)
+    train_label = label_to_num(train_dataset['label'].values)
+    dev_label = label_to_num(dev_dataset['label'].values)
 
-  # make dataset for pytorch.
-  RE_train_dataset = RE_Dataset(tokenized_train, train_label)
-  # RE_dev_dataset = RE_Dataset(tokenized_dev, dev_label)
+    # tokenizing dataset
+    tokenized_train = tokenized_dataset(train_dataset, tokenizer)
+    tokenized_dev = tokenized_dataset(dev_dataset, tokenizer)
 
-  RE_train_dataset, RE_dev_dataset = RE_train_dataset.split_dataset(0.1)
+    # make dataset for pytorch.
+    RE_train_dataset = RE_Dataset(tokenized_train, train_label)
+    RE_dev_dataset = RE_Dataset(tokenized_dev, dev_label)
 
+  else:
+    train_dataset = load_data("../dataset/train/train_drop_duplicated.csv", args.rbert)
+    train_label = label_to_num(train_dataset['label'].values)
+
+    if args.custom_tokenizer: #use custom tokenizer
+      tokenized_train = custom_tokenized_dataset(train_dataset)
+    else:
+      tokenized_train = tokenized_dataset(train_dataset, tokenizer)
+
+    if args.rbert: #use r-roberta model
+      RE_train_dataset = RE_rbet_Dataset(tokenized_train, train_label)
+    else:
+      RE_train_dataset = RE_Dataset(tokenized_train, train_label)
+    RE_train_dataset, RE_dev_dataset = RE_train_dataset.split_dataset(0.1)
+
+  # print(RE_train_dataset[0])
+  
   device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
   print(device)
   # setting model hyperparameter
-  model_config =  AutoConfig.from_pretrained(MODEL_NAME)
+
+  model_config = AutoConfig.from_pretrained(MODEL_NAME)
   model_config.num_labels = 30
 
-  model =  AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, config=model_config)
-  print(model.config)
-  model.parameters
+  if args.model_type == 'default':
+    print('Training on RoBERTa model with Focal Loss')
+    # model =  AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, config=model_config)
+    model = CustomRobertaForSequenceClassification.from_pretrained(MODEL_NAME, config=model_config)
 
-  if rbert:
+  elif args.model_type == 'rbert':
+    print('Training on R-RoBERTa model')
+    model = RRobertaClassification.from_pretrained(MODEL_NAME, config=model_config)
+
+  elif args.model_type == 'lstm':
+    print('Training on LSTM+RoBERTa model')
+    model = LSTMRobertaForSequenceClassification.from_pretrained(MODEL_NAME, config=model_config)
+  
+  else:
+    print('Wrong Input!')
+
+  # print(model.classifier)
+  
+  if args.add_special:
     model.resize_token_embeddings(len(tokenizer))
   
+  # print(model.config)
+  params = model.parameters()
+
   model.to(device)
 
-  #wandb initialization
-  wandb.init(project="KLUE-RE")
+  # #wandb initialization
+  wandb.init(entity="bumblebe2", project="KLUE", name=args.name)
 
   # 사용한 option 외에도 다양한 option들이 있습니다.
   # https://huggingface.co/transformers/main_classes/trainer.html#trainingarguments 참고해주세요.
@@ -140,7 +193,7 @@ def train():
     learning_rate=5e-5,               # learning_rate
     per_device_train_batch_size=32,  # batch size per device during training
     per_device_eval_batch_size=32,   # batch size for evaluation
-    warmup_steps=500,                # number of warmup steps for learning rate scheduler
+    warmup_steps=1000,                # number of warmup steps for learning rate scheduler
     weight_decay=0.01,               # strength of weight decay
     logging_dir='./logs',            # directory for storing logs
     logging_steps=100,              # log saving step.
@@ -151,9 +204,10 @@ def train():
     eval_steps = 500,            # evaluation step.
     load_best_model_at_end = True,
     report_to="wandb",
-    run_name="roberta"
+    run_name="test-run"
   )
-  trainer = Trainer(
+  trainer = MyTrainer(
+    loss_name = 'FocalLoss',
     model=model,                         # the instantiated 🤗 Transformers model to be trained
     args=training_args,                  # training arguments, defined above
     train_dataset=RE_train_dataset,         # training dataset
@@ -164,8 +218,19 @@ def train():
   # train model
   trainer.train()
   model.save_pretrained('./best_model')
-def main():
-  train()
+
+def main(args):
+  train(args)
 
 if __name__ == '__main__':
-  main()
+  parser = argparse.ArgumentParser(description='Argparse')
+  parser.add_argument('--name', type=str, help='name of wandb run')
+  parser.add_argument('--aug_data', type=bool, default=False)
+  parser.add_argument('--add_special', type=bool, default=False)
+  parser.add_argument('--rbert', type=bool, default=False)
+  parser.add_argument('--custom_tokenizer', type=bool, default=False)
+  parser.add_argument('--model_type', type=str)
+
+  args = parser.parse_args()
+
+  main(args)
