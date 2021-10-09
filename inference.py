@@ -35,8 +35,6 @@ def inference(model, tokenized_sent, device, rbert):
         outputs = model(
             input_ids=data['input_ids'].to(device),
             attention_mask=data['attention_mask'].to(device),
-            # e1_mask = data['e1_mask'].to(device),
-            # e2_mask = data['e2_mask'].to(device)
             # token_type_ids=data['token_type_ids'].to(device)
             )
     logits = outputs[0]
@@ -91,9 +89,9 @@ def main(args):
   MODEL_NAME = args.model_dir
 
   if args.model_type == 'default':
-    print('Training on RoBERTa model with Focal Loss')
-    # model =  AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
-    model = CustomRobertaForSequenceClassification.from_pretrained(MODEL_NAME)
+    print('Training on default Pretrained Model')
+    model =  AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
+    # model = CustomRobertaForSequenceClassification.from_pretrained(MODEL_NAME)
 
   elif args.model_type == 'rbert':
     print('Training on R-RoBERTa model')

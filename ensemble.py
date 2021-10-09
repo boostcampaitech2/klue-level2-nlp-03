@@ -18,6 +18,7 @@ def num_to_label(label):
   return origin_label
 
 def soft_voting(args):
+  """args.path 내 모든 csv를 soft voting"""
 
   # args.path 내 모든 csv 파일 읽어오기
   file_list = os.listdir(args.path)
@@ -53,6 +54,7 @@ def soft_voting(args):
   print(output)
   
 def hard_voting(args):
+  """args.path 내 모든 csv를 hard voting"""
   # args.path 내 모든 csv 파일 읽어오기
   file_list = os.listdir(args.path)
   # hard voting args

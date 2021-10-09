@@ -5,15 +5,13 @@ import torch
 import sklearn
 import numpy as np
 import random
-from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score
+from sklearn.metrics import accuracy_score, f1_score
 from sklearn.model_selection import train_test_split
-from transformers import AutoTokenizer, AutoConfig, AutoModelForSequenceClassification, Trainer, TrainingArguments, RobertaConfig, RobertaTokenizer, RobertaForSequenceClassification, BertTokenizer
-import torch.nn as nn
+from transformers import AutoTokenizer, AutoConfig, AutoModelForSequenceClassification, TrainingArguments
 
 import argparse
 
 import wandb
-from adamp import AdamP
 
 from load_data import *
 from bertmodel import *
@@ -93,12 +91,10 @@ def return_all_items(dataset):
 
 def train(args):
 
-  # os.environ["WANDB_DISABLED"] = "true"
-  
   seed_everything(42)
 
   # load model and tokenizer
-  MODEL_NAME = "klue/roberta-large"
+  MODEL_NAME = args.model_name
 
   tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, cache_dir='bert_ckpt')
 
@@ -144,7 +140,6 @@ def train(args):
       RE_train_dataset = RE_Dataset(tokenized_train, train_label)
     RE_train_dataset, RE_dev_dataset = RE_train_dataset.split_dataset(0.1)
 
-  # print(RE_train_dataset[0])
   
   device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -154,10 +149,11 @@ def train(args):
   model_config = AutoConfig.from_pretrained(MODEL_NAME)
   model_config.num_labels = 30
 
+  # model 선정
   if args.model_type == 'default':
-    print('Training on RoBERTa model with Focal Loss')
-    # model =  AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, config=model_config)
-    model = CustomRobertaForSequenceClassification.from_pretrained(MODEL_NAME, config=model_config)
+    print('Training on default pretrained model')
+    model =  AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, config=model_config)
+    # model = CustomRobertaForSequenceClassification.from_pretrained(MODEL_NAME, config=model_config)
 
   elif args.model_type == 'rbert':
     print('Training on R-RoBERTa model')
@@ -170,8 +166,6 @@ def train(args):
   else:
     print('Wrong Input!')
 
-  # print(model.classifier)
-  
   if args.add_special:
     model.resize_token_embeddings(len(tokenizer))
   
@@ -180,8 +174,8 @@ def train(args):
 
   model.to(device)
 
-  # #wandb initialization
-  wandb.init(entity="bumblebe2", project="KLUE", name=args.name)
+  # wandb initialization
+  wandb.init(entity="bumblebe2", project="KLUE", name=args.wandb_name)
 
   # 사용한 option 외에도 다양한 option들이 있습니다.
   # https://huggingface.co/transformers/main_classes/trainer.html#trainingarguments 참고해주세요.
@@ -207,7 +201,7 @@ def train(args):
     run_name="test-run"
   )
   trainer = MyTrainer(
-    loss_name = 'FocalLoss',
+    loss_name = 'FocalLoss',             # Customized Loss
     model=model,                         # the instantiated 🤗 Transformers model to be trained
     args=training_args,                  # training arguments, defined above
     train_dataset=RE_train_dataset,         # training dataset
@@ -224,7 +218,8 @@ def main(args):
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='Argparse')
-  parser.add_argument('--name', type=str, help='name of wandb run')
+  parser.add_argument('--wandb_name', type=str, default = 'klue-re', help='name of wandb run')
+  parser.add_argument('--model_name', type=str, default="klue/roberta-large")
   parser.add_argument('--aug_data', type=bool, default=False)
   parser.add_argument('--add_special', type=bool, default=False)
   parser.add_argument('--rbert', type=bool, default=False)

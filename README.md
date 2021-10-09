@@ -3,12 +3,12 @@ klue-level2-nlp-03 created by GitHub Classroom
 
 ## Train
 ```
-$ python train.py --model_type=lstm --name=(wandb에 들어가는 이름)
+$ python train.py
 ```
 
 ## Inference
 ```
-$ python inference.py --model_type=lstm
+$ python inference.py
 ```
 
 ## 파일
