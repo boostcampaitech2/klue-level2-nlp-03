@@ -6,6 +6,22 @@
   <img alt="Conda" src="https://img.shields.io/conda/pn/boostcampaitech2/klue-level2-nlp-03">
 </p>   -->
 
+## Overview Description
+
+Relation extraction (RE) identifies semantic relations between entity pairs in a text. The relation is defined between an entity pair consisting of subject entity ($e_{\text{subj}}$) and object entity ($e_{\text{obj}}$ ). For example, in a sentence 'Kierkegaard was born to an affluent family in Copenhagen’, the subject entity is `Kierkegaard` and the object entity is `Copenhagen`. The goal is then to pick an appropriate relationship between these two entities: $place\_of\_birth$. In order to evaluate whether a model correctly understands the relationships between entities, we include KLUE-RE in our benchmark. Since there is no large-scale RE benchmark publicly available in Korean, we collect and annotate our own dataset.
+
+
+We formulate RE as a single sentence classification task. A model picks one of predefined relation types describing the relation between two entities within a given sentence. In other words, an RE model predicts an appropriate relation $r$ of entity pair $(e_{\text{subj}},\ e_{\text{obj}})$ in a sentence $s$, where $e_{\text{subj}}$ is the subject entity and $e_{\text{obj}}$ is the object entity. We refer to $(e_{\text{subj}},\ r,\ e_{\text{obj}})$ as a relation triplet. The entities are marked as corresponding spans in each sentence $s$. There are 30 relation classes that consist of 18 person-related relations, 11 organization-related relations, and $\textit{no_relation}$. We evaluate a model using micro-F1 score, computed after excluding $\textit{no_relation}$, and area under the precision-recall curve (AUPRC) including all 30 classes.
+
+## Evaluation Methods
+The evaluation metrics for KLUE-RE are 1) micro F1 score on relation existing cases, and 2) area under the precision-recall curve (AUPRC) on all classes.
+
+
+Micro F1 score is a geometric mean of micro-precision and micro-recall. It measures the F1-score of the aggregated contributions of all classes. It gives each sample the same importance, thus naturally weighting more on the majority class. We remove the dominant class $(no\_relation)$ for this metric to not incentivize the model predicting negative class very well.
+
+
+AUPRC is an averaged area under the precision-recall curves whose x-axis is recall and y-axis is the precision of all relation classes. It is a useful metric for this imbalanced data setting while rare positive examples are important.
+
 ## Code Contributors
 
 <p>
@@ -155,4 +171,3 @@ $python ensemble.py --path='./ensemble_csv'
     <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system2.png">
     <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system3.png">
 </p>
-
