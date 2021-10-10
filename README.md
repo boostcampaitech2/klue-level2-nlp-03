@@ -2,9 +2,6 @@
 문장의 단어(Entity)에 대한 속성과 관계를 예측하는 인공지능 만들기
 
 ## Train
-```
-$ python train.py
-```
 
 ## Inference
 ```
