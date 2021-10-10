@@ -124,3 +124,11 @@ $python ensemble.py --path='./ensemble_csv'
     <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system3.png">
 </p>
 
+## Code Contributors
+
+<p>
+
+<a href="https://github.com/iamtrueline">
+<image x="5" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/79238023?v=4"/></a>  
+</p>
+
