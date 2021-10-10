@@ -139,6 +139,6 @@ This project exists thanks to all the people who contribute.
 <a xlink:href="https://github.com/sw6820" class="bumblebe2" target="_blank" rel="nofollow sponsored" id="sw6820"><image x="281" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/52646313?v=4"/></a>
 <a xlink:href="https://github.com/NayoungLee-de" class="bumblebe2" target="_blank" rel="nofollow sponsored" id="NayoungLee-de"><image x="350" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/69383548?v=4"/></a>
 
-      </svg>
+</svg>
 
 
