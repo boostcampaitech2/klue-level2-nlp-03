@@ -128,7 +128,12 @@ $python ensemble.py --path='./ensemble_csv'
 This project exists thanks to all the people who contribute. 
 
 <p>
-    <img src="https://avatars.githubusercontent.com/u/79238023?v=4">    
+    <a href="https://github.com/iamtrueline">
+<img border="0" alt="W3Schools" src="logo_w3s.gif" width="64" height="64">
+</a>    
+      <a href="https://github.com/iamtrueline">
+      <img class="img" src="https://avatars.githubusercontent.com/u/79238023?v=4"/>
+  </a>
 </p>    
 <a xlink:href="https://github.com/iamtrueline" class="bumblebe2" target="_blank" rel="nofollow sponsored" id="iamtrueline"><image x="5" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/79238023?v=4"/></a>
 <a xlink:href="https://github.com/promisemee" class="bumblebe2" target="_blank" rel="nofollow sponsored" id="promisemee"><image x="74" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/31719240?v=4"/></a>
