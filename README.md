@@ -173,4 +173,4 @@ $python ensemble.py --path='./ensemble_csv'
 </p>
 
 ## Reference
-![KLUE-RE - Relation Extraction](https://klue-benchmark.com/tasks/70/overview/description)
+[KLUE-RE - Relation Extraction](https://klue-benchmark.com/tasks/70/overview/description)
