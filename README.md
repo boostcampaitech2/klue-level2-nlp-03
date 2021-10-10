@@ -1,7 +1,7 @@
 <h1 align="center">Entity Relation Extraction in sentences 👋</h1>
 
 ## Environments 
-
+ - UBUNTU 18.04
 ### Requirements
 - python==3.8
 - pandas==1.1.5
