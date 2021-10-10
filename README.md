@@ -117,13 +117,13 @@ After downloading and converting datasets and baseline codes, the data directory
          └── train.csv
 ```
 #### Download Baseline code
-To download baseline codes, run following command. The baseline codes will be located in `opt/ml/code`
+To download baseline codes, run following command. The baseline codes will be located in `/opt/ml/code`
 ```
 $ !wget https://aistages-prod-server-public.s3.amazonaws.com/app/Competitions/000075/data/code.tar.gz
 ```
 
 #### Download Dataset
-To download dataset, run following command. The dataset will be located in `opt/ml/dataset`
+To download dataset, run following command. The dataset will be located in `/opt/ml/dataset`
 ```
 $ !wget https://aistages-prod-server-public.s3.amazonaws.com/app/Competitions/000075/data/dataset.tar.gz
 ``` 
