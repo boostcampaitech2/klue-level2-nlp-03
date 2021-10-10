@@ -15,12 +15,15 @@ The following specs were used to create the original solution.
 
 ## Reproducing Submission
 To reproduct my submission without retraining, do the following steps:
-<!-- 1. [Installation](#installation)
+1. [Installation](#installation)
 2. [Dataset Preparation](#Dataset-Preparation)
-3. [Make RGBY Images](#make-rgby-images) for official.
-4. [Download Pretrained models](#pretrained-models)
-5. [Inference](#inference)
-6. [Make Submission](#make-submission) -->
+3. [Prepare Datasets](#Prepare-Datasets)
+4. [Download Baseline Codes](#Download-Baseline-Codes)
+5. [Train models](#Train-models-(GPU-needed))
+6. [Inference & make submission](#Inference-&-make-submission)
+7. [Ensemble](#Ensemble)
+8. [Wandb graphs](#Wandb-graphs)
+9. [Code Contributors](#Code-Contributors)
 
 ## Installation
 All requirements should be detailed in requirements.txt. Using Anaconda is strongly recommended.
@@ -103,17 +106,20 @@ $python ensemble.py --path='./ensemble_csv'
 
 ### Wandb graphs
 #### eval graphs
-<img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/eval.png)"></a>
-<img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/eval2.png)"></a>
-#### train graphs
-<img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/train.png)"></a>
-<img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/train2.png)"></a>
-#### system graphs
-<img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system.png)"></a>
-<img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system2.png)"></a>
-<img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system3.png)"></a>
+<p>
+    <img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/eval.png)">
+    <img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/eval2.png)">
+    #### train graphs
+    <img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/train.png)">
+    <img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/train2.png)">
+    #### system graphs
+    <img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system.png)">
+    <img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system2.png)">
+    <img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system3.png)">
+</p>
+
 
 ## Code Contributors
 
 This project exists thanks to all the people who contribute. 
-<img src="https://sw6820.github.io/ai_boostcamp_lv3_3/" /></a>
+<a href="https://github.com/boostcampaitech2/klue-level2-nlp-03"><img src="https://sw6820.github.io/ai_boostcamp_lv3_3/" /></a>
