@@ -130,4 +130,7 @@ $python ensemble.py --path='./ensemble_csv'
 ## Code Contributors
 
 This project exists thanks to all the people who contribute. 
-<a href="https://github.com/boostcampaitech2/klue-level2-nlp-03"><img src="https://sw6820.github.io/ai_boostcamp_lv3_3/" /></a>
+<p>
+    <img src="https://sw6820.github.io/ai_boostcamp_lv3_3/">
+</p>
+
