@@ -131,7 +131,7 @@ $python ensemble.py --path='./ensemble_csv'
 
 <p>
 
-<a href="https://github.com/iamtrueline">
-<image x="5" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/79238023?v=4"/></a>  
+<a href="https://github.com/iamtrueline"><image x="5" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/79238023?v=4"/></a>  
+ 
 </p>
 
