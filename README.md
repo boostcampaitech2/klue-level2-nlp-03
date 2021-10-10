@@ -131,19 +131,19 @@ $python ensemble.py --path='./ensemble_csv'
 ```
 
 ### Wandb graphs
-#### eval graphs
+- eval graphs
 <p>
     <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/eval.png">
     <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/eval2.png">
 </p>    
 
-#### train graphs
+- train graphs
 <p>
     <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/train.png">
     <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/train2.png">
 </p>    
 
-#### system graphs
+- system graphs
 <p>
     <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system.png">
     <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system2.png">
