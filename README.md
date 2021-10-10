@@ -2,6 +2,8 @@
 
 <!-- <p align="center">
   <img alt="GitHub watchers" src="https://img.shields.io/github/watchers/boostcampaitech2/klue-level2-nlp-03?style=social">
+  <img alt="GitHub Pipenv locked Python version" src="https://img.shields.io/github/pipenv/locked/python-version/boostcampaitech2/klue-level2-nlp-03?style=plastic">
+  <img alt="Conda" src="https://img.shields.io/conda/pn/boostcampaitech2/klue-level2-nlp-03">
 </p>   -->
 
 ## Code Contributors
