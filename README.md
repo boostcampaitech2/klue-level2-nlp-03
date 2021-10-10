@@ -7,9 +7,7 @@
 
 
 ## Ensemble
-```
-python ensemble.py --path='./ensemble_csv'
-```
+
 
 ## 파일
 bertmodel.py: Custom Trainer, Custom Model, Focal Loss가 구현되어있는 파일
