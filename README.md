@@ -107,7 +107,7 @@ $python ensemble.py --path='./ensemble_csv'
 ### Wandb graphs
 #### eval graphs
 <p>
-    <img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/eval.png)">
+    <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/eval.png">
     <img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/eval2.png)">
     #### train graphs
     <img src="[images/200x200.png](https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/train.png)">
