@@ -38,7 +38,7 @@
 
 ### Hardware
 The following specs were used to create the original solution.
-- GPU(CUDA) : V100 
+- GPU(CUDA) : v100 
 
 ## Reproducing Submission
 To reproduct my submission without retraining, do the following steps:
