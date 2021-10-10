@@ -1,7 +1,7 @@
 <h1 align="center">Entity Relation Extraction in sentences 👋</h1>
-
-![GitHub watchers](https://img.shields.io/github/watchers/boostcampaitech2/klue-level2-nlp-03?style=social)
-
+<p align="center">
+  <img alt="GitHub watchers" src="https://img.shields.io/github/watchers/boostcampaitech2/klue-level2-nlp-03?style=social">
+</p>  
 ## Code Contributors
 
 <p>
