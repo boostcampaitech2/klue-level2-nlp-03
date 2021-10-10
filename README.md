@@ -4,9 +4,7 @@
 ## Train
 
 ## Inference
-```
-$ python inference.py
-```
+
 
 ## Ensemble
 ```
