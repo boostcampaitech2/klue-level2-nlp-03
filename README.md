@@ -54,7 +54,7 @@ To reproduct my submission without retraining, do the following steps:
 ## Installation
 All requirements should be detailed in requirements.txt. Using Anaconda is strongly recommended.
 ```
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ## Dataset Preparation
