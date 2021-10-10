@@ -50,7 +50,6 @@ To reproduct my submission without retraining, do the following steps:
 6. [Inference & make submission](#Inference-&-make-submission)
 7. [Ensemble](#Ensemble)
 8. [Wandb graphs](#Wandb-graphs)
-9. [Code Contributors](#Code-Contributors)
 
 ## Installation
 All requirements should be detailed in requirements.txt. Using Anaconda is strongly recommended.
