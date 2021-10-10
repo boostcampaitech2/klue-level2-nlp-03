@@ -17,7 +17,7 @@ We formulate RE as a single sentence classification task. A model picks one of p
 The evaluation metrics for KLUE-RE are 1) micro F1 score on relation existing cases, and 2) area under the precision-recall curve (AUPRC) on all classes.
 
 
-Micro F1 score is a geometric mean of micro-precision and micro-recall. It measures the F1-score of the aggregated contributions of all classes. It gives each sample the same importance, thus naturally weighting more on the majority class. We remove the dominant class <img src="https://render.githubusercontent.com/render/math?math=(no\_relation)">" for this metric to not incentivize the model predicting negative class very well.
+Micro F1 score is a geometric mean of micro-precision and micro-recall. It measures the F1-score of the aggregated contributions of all classes. It gives each sample the same importance, thus naturally weighting more on the majority class. We remove the dominant class (<img src="https://render.githubusercontent.com/render/math?math=no\_relation">") for this metric to not incentivize the model predicting negative class very well.
 
 
 AUPRC is an averaged area under the precision-recall curves whose x-axis is recall and y-axis is the precision of all relation classes. It is a useful metric for this imbalanced data setting while rare positive examples are important.
