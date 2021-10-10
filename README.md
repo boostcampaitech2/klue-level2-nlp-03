@@ -122,24 +122,3 @@ $python ensemble.py --path='./ensemble_csv'
     <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/system3.png">
 </p>
 
-
-## Code Contributors
-
-This project exists thanks to all the people who contribute. 
-
-<p>
-    <a href="https://github.com/iamtrueline">
-<img border="0" alt="W3Schools" src="logo_w3s.gif" width="64" height="64">
-</a>    
-      <a href="https://github.com/iamtrueline">
-      <img class="img" src="https://avatars.githubusercontent.com/u/79238023?v=4"/>
-  </a>
-</p>    
-<a xlink:href="https://github.com/iamtrueline" class="bumblebe2" target="_blank" rel="nofollow sponsored" id="iamtrueline"><image x="5" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/79238023?v=4"/></a>
-<a xlink:href="https://github.com/promisemee" class="bumblebe2" target="_blank" rel="nofollow sponsored" id="promisemee"><image x="74" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/31719240?v=4"/></a>
-<a xlink:href="https://github.com/kimminji2018" class="bumblebe2" target="_blank" rel="nofollow sponsored" id="kiminji2018"><image x="143" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/74283190?v=4"/></a>
-<a xlink:href="https://github.com/Ihyun" class="bumblebe2" target="_blank" rel="nofollow sponsored" id="Ihyun"><image x="212" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/32431157?v=4"/></a>
-<a xlink:href="https://github.com/sw6820" class="bumblebe2" target="_blank" rel="nofollow sponsored" id="sw6820"><image x="281" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/52646313?v=4"/></a>
-<a xlink:href="https://github.com/NayoungLee-de" class="bumblebe2" target="_blank" rel="nofollow sponsored" id="NayoungLee-de"><image x="350" y="5" width="64" height="64" xlink:href="https://avatars.githubusercontent.com/u/69383548?v=4"/></a>
-<p/>
-
