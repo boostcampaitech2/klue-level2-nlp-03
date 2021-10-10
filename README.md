@@ -130,8 +130,25 @@ $python ensemble.py --path='./ensemble_csv'
 ## Code Contributors
 
 <p>
+<p>
 <a href="https://github.com/iamtrueline" target="_blank">
   <img x="5" y="5" width="64" height="64" border="0" src="https://avatars.githubusercontent.com/u/79238023?v=4"/>
 </a>
+<a href="https://github.com/promisemee" target="_blank">
+  <img x="74" y="5" width="64" height="64" border="0" src="https://avatars.githubusercontent.com/u/31719240?v=4"/>
+</a>
+<a href="https://github.com/kimminji2018" target="_blank">
+  <img x="143" y="5" width="64" height="64" border="0" src="https://avatars.githubusercontent.com/u/74283190?v=4"/>
+</a>
+<a href="https://github.com/Ihyun" target="_blank">
+  <img x="212" y="5" width="64" height="64" border="0" src="https://avatars.githubusercontent.com/u/79238023?v=4"/>
+</a>
+<a href="https://github.com/sw6820" target="_blank">
+  <img x="281" y="5" width="64" height="64" border="0" src="https://avatars.githubusercontent.com/u/32431157?v=4"/>
+</a>
+<a href="https://github.com/NayoungLee-de" target="_blank">
+  <img x="350" y="5" width="64" height="64" border="0" src="https://avatars.githubusercontent.com/u/69383548?v=4"/>
+</a>
+
 </p>
 
