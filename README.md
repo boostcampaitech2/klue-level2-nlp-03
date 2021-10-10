@@ -127,7 +127,7 @@ To download dataset, run following command. The dataset will be located in *opt/
 ```
 $ !wget https://aistages-prod-server-public.s3.amazonaws.com/app/Competitions/000075/data/dataset.tar.gz
 ``` 
-### Train models (GPU needed)
+### Train Models (GPU needed)
 To train models, run following commands.
 ```
 $ python train.py 
@@ -142,7 +142,7 @@ LSTM-RoBERTa-large | v100 | 32 | 5 |  2h 25m 14s
 RoBERTa-large | v100 | 32 | 5 | 2h 5m 23s
 
 
-### Inference & make submission
+### Inference & Make Submission
 ```
 $ python inference.py
 ```
@@ -152,7 +152,7 @@ $ python inference.py
 $python ensemble.py --path='./ensemble_csv'
 ```
 
-### Wandb graphs
+### Wandb Graphs
 - eval graphs
 <p>
     <img src="https://github.com/boostcampaitech2/klue-level2-nlp-03/blob/Main/wandb_imgaes/eval.png">
